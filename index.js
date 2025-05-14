@@ -1,7 +1,7 @@
 console.log("App starting...");
 
 const cowsay = require("cowsay");
-const genres = require('./data/genres.js');
+const express = require('express');
 
 // console.log(cowsay.say({
 //     text : "Hello Refresh Academy!",
