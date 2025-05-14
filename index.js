@@ -15,7 +15,7 @@ const port = 3000
 
 app.get('/', (req, res) => {
 //   res.send('Hello World!')
-  const cowSaid = say({
+  const cowSaid = cowsay.say({
     text : "Hello Refresh Academy!",
     e : "XXX",
     T : "V "
