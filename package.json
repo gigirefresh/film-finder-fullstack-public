@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/refresh-academy/film-finder-backend-gigi/issues"
   },
-  "homepage": "https://github.com/refresh-academy/film-finder-backend-gigi#readme"
+  "homepage": "https://github.com/refresh-academy/film-finder-backend-gigi#readme",
+  "dependencies": {
+    "cowsay": "^1.6.0"
+  }
 }
