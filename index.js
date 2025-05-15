@@ -1,26 +1,30 @@
 console.log("App starting...");
-
 const cowsay = require("cowsay");
 const express = require('express');
-
-// console.log(cowsay.say({
-//     text : "Hello Refresh Academy!",
-//     e : "XXX",
-//     T : "V "
-// }));
-
-
 const app = express()
 const port = 3000
 
 app.get('/', (req, res) => {
-//   res.send('Hello World!')
-  const cowSaid = cowsay.say({
-    text : "Hello Refresh Academy!",
-    e : "XXX",
-    T : "V "
-  })
-  res.send("<textarea style='height:300px;width:300px'>" + cowSaid + "</textarea>");
+  //   res.send('Hello World!')
+  const cowSaid = cowsay.say({ text: "Hello Refresh Academy!" })
+  res.send("{'genres': [1,2,3]}");
+})
+
+
+app.get('/genre/movie/list', (req, res) => {
+  console.log(req.query);
+  const genres = {
+    "genres": [
+      {
+        "id": 28,
+        "name": "Azione"//Action
+      },
+      {
+        "id": 12,
+        "name": "Avventura"//Adventure
+      }]
+  }
+  res.send(genres)
 })
 
 

@@ -1,0 +1,1 @@
+console.log("mi ha chiamato lo script")
