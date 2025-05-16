@@ -1,0 +1,145 @@
+body {
+  background-color: #7f0920;
+  color: #0a0408;
+}
+
+#appTitle {
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+  font-family: 'Staatliches', sans-serif;
+  font-size: 80px;
+}
+
+#genreForm, #playBtn {
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+  font-family: 'Fredoka One', sans-serif;
+}
+
+#movieInfo {
+  width:  65%;
+  margin:  32px auto;
+}
+
+#movieInfo:after {
+  content:  "";
+  display:  table;
+  clear:  both;
+}
+
+#moviePoster, #movieText {
+  width:  50%;
+  float:  left;
+}
+
+img#moviePoster {
+  width:  100%;
+  height:  auto;
+  display:  block;
+  margin:  auto;
+}
+
+#movieText {
+  font-family: 'Questrial';
+  color: #FEFBEA;
+  line-height: 1.25;
+}
+
+#movieTitle, #movieOverview {
+  padding:  32px;
+}
+
+#playBtn {
+  margin-top: 20px;
+  font-size: 25px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border-style: none;
+  background-color: #B97828;
+  color: #fdc238;
+  cursor:  pointer;
+}
+
+label {
+  display: block;
+  font-size: 35px;
+  margin-bottom: 5px;
+}
+
+select {
+  width: 200px;
+  height: auto;
+}
+
+#likeOrDislikeBtns {
+  text-align: center;
+  margin: 0px auto;
+}
+
+#likeBtn, #dislikeBtn {
+  padding: 15px 25px;
+  font-size: 25px;
+  border-radius: 12px;
+  border-style: none;
+  cursor:  pointer;
+}
+
+#likeBtn {
+  background-color: #249e57;
+  color: darkgreen;
+}
+
+#dislikeBtn {
+  background-color: #c74a4a;
+  color: #910000;
+}
+
+#carousel {
+  width: 100vw;
+  height: 300px;
+  padding: 10px;
+
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+
+  columns: 1;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+
+  display: inline-block;
+  height: 100%;
+  width: 200px;
+
+  background-color: #eee;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 0 10px;
+
+  text-align: left;
+}
+
+li:nth-child(even) {
+  background-color: cyan;
+}
+
+ul::column {
+  scroll-snap-align: center;
+}
+
+ul::column::scroll-marker {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+ul::column::scroll-marker:target-current {
+  background-color: black;
+}

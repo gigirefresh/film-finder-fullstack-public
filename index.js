@@ -3,12 +3,13 @@ const cowsay = require("cowsay");
 const express = require('express');
 const app = express()
 const port = 3000
+app.use(express.static("public"));
 
-app.get('/', (req, res) => {
-  //   res.send('Hello World!')
-  const cowSaid = cowsay.say({ text: "Hello Refresh Academy!" })
-  res.send("{'genres': [1,2,3]}");
-})
+
+//// commentin this one so out so the we can default to index.html on /
+// app.get('/', (req, res) => {
+//   res.send("hello world");
+// })
 
 
 app.get('/genre/movie/list', (req, res) => {
