@@ -14,17 +14,8 @@ app.use(express.static("public"));
 
 app.get('/genre/movie/list', (req, res) => {
   console.log(req.query);
-  const genres = {
-    "genres": [
-      {
-        "id": 28,
-        "name": "Azione"//Action
-      },
-      {
-        "id": 12,
-        "name": "Avventura"//Adventure
-      }]
-  }
+  const dataAsText = fs.readFileSync('data/genres.json', 'utf8');
+  const genres = JSON.parse(dataAsText);
   res.send(genres)
 })
 
