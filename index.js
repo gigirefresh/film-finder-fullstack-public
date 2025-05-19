@@ -19,24 +19,10 @@ app.get('/genre/movie/list', (req, res) => {
   const dataAsText = fs.readFileSync('data/genres.json', 'utf8');
   const genres = JSON.parse(dataAsText);
   res.send(genres)
-})
+});
 
-// https://api.themoviedb.org/3/discover/movie?with_genres=28&api_key=4048775a0f068af3048837ff0341a4f7
-// https://api.themoviedb.org/3/discover/movie?with_genres=99&api_key=4048775a0f068af3048837ff0341a4f7
 app.get('/discover/movie', (req, res) => {
   console.log("/discover/movie params: ", req.query)
-  // --> stampa  /discover/movie params: { with_genres: '16', api_key: 'ciaomondo' }
-
-  // if (req.query.with_genres==='28') {
-  //   const dataAsText = fs.readFileSync('data/genre-movies-28.json', 'utf8');
-  //   const genreMovies = JSON.parse(dataAsText);
-  //   res.send(genreMovies)
-  // }
-  // if (req.query.with_genres==='99') {
-  //   const dataAsText = fs.readFileSync('data/genre-movies-99.json', 'utf8');
-  //   const genreMovies = JSON.parse(dataAsText);
-  //   res.send(genreMovies)
-  // }
   const genreId = req.query.with_genres; // <-- SECURITY THREAT!
   const dataAsText = fs.readFileSync(`data/genre-movies-${genreId}.json`, 'utf8');
   const genreMovies = JSON.parse(dataAsText);
@@ -45,5 +31,5 @@ app.get('/discover/movie', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`) // http://localhost:3000
-})
+});
 
