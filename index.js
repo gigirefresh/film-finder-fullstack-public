@@ -25,8 +25,20 @@ app.get('/discover/movie', (req, res) => {
 })
 
 app.post('/api/movie/like', (req, res) => {
- console.log("Request body: ", req.body);
+ console.log("Request body: ", req.body.movieId);
  const responseObj = { message: 'Data received successfully', yourData: req.body };
+ try {
+  const votesText = fs.readFileSync(`data/votes.json`, 'utf8'); 
+  const votesObj = JSON.parse(votesText);
+  console.log("votesObj BEFORE PUSH", votesObj);
+  votesObj.likes.push(req.body.movieId);
+  console.log("votesObj AFTER PUSH", votesObj);
+  fs.writeFileSync("data/votes.json", JSON.stringify(votesObj));
+  console.log("Fine scrittura file") // Non lo stampa
+ }
+ catch (err) {
+  console.log("Error: ", err);
+ }
  res.status(200).json(responseObj);
 });
 
