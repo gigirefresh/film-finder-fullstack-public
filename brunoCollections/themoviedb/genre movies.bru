@@ -1,0 +1,16 @@
+meta {
+  name: genre movies
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://api.themoviedb.org/3/discover/movie?with_genres=28&api_key=b22aeb005afae2ccc4c16edfebbc202a
+  body: none
+  auth: inherit
+}
+
+params:query {
+  with_genres: 28
+  api_key: b22aeb005afae2ccc4c16edfebbc202a
+}

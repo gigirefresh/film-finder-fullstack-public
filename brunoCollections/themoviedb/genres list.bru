@@ -1,0 +1,15 @@
+meta {
+  name: genres list
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api.themoviedb.org/3/genre/movie/list?api_key=b22aeb005afae2ccc4c16edfebbc202a
+  body: none
+  auth: inherit
+}
+
+params:query {
+  api_key: b22aeb005afae2ccc4c16edfebbc202a
+}

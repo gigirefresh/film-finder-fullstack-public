@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Movie db API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

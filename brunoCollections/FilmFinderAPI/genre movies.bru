@@ -1,0 +1,16 @@
+meta {
+  name: genre movies
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/discover/movie?with_genres=28&api_key=b22aeb005afae2ccc4c16edfebbc202a
+  body: none
+  auth: inherit
+}
+
+params:query {
+  with_genres: 28
+  api_key: b22aeb005afae2ccc4c16edfebbc202a
+}

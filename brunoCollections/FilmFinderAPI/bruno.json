@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Film Finder LOCAL API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
