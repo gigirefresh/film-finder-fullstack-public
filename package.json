@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/refresh-academy/film-finder-backend-gigi#readme",
   "dependencies": {
+    "body-parser": "^2.2.0",
     "cowsay": "^1.6.0",
     "express": "^5.1.0"
   },
