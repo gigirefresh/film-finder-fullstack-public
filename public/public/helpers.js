@@ -3,10 +3,10 @@ const populateGenreDropdown = (genres) => {
   const select = document.getElementById('genres')
 
   for (const genre of genres) {
-      let option = document.createElement("option");
-      option.value = genre.id;
-      option.text = genre.name;
-      select.appendChild(option);
+    let option = document.createElement("option");
+    option.value = genre.id;
+    option.text = genre.name;
+    select.appendChild(option);
   }
 };
 
@@ -33,15 +33,42 @@ const clearCurrentMovie = () => {
 }
 
 // After liking a movie, clears the current movie from the screen and gets another random movie
-const likeMovie = () => {
+const likeMovie = async (event) => {
+  console.log("Clicked Button: ", event.target); // event.target is the Like button
+  const movieId = event.target.getAttribute("movieId"); // Get the movie ID from the button
+  console.log("Showed movie ID: ", movieId);
+  sendLikeToServer(movieId, true); // Send data to server with like = true
   clearCurrentMovie();
   showRandomMovie();
 };
 
 // After disliking a movie, clears the current movie from the screen and gets another random movie
-const dislikeMovie = () => {
+const dislikeMovie = (event) => {
+  console.log("Clicked Button: ", event.target); // event.target is the Dislike button
+  const movieId = document.getElementById("likeBtn").getAttribute("movieId"); // Get the movie ID from the button
+  console.log("Showed movie ID: ", movieId);
+  sendLikeToServer(movieId, false); // Send data to server with like = false
   clearCurrentMovie();
   showRandomMovie();
+};
+
+const sendLikeToServer = async (movieId, like) => {
+  const response = await fetch("/api/movie/like", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "movieId": movieId,
+      "like": like
+    }),
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `HTTP error! status: ${response.status}, message: ${errorText}`
+    );
+  }
 };
 
 // Create HTML for movie poster
@@ -97,6 +124,7 @@ const displayMovie = (movieInfo) => {
   moviePosterDiv.appendChild(moviePoster);
   movieTextDiv.appendChild(titleHeader);
   movieTextDiv.appendChild(overviewText);
+  document.getElementById("likeBtn").setAttribute("movieId", movieInfo.id);
 
   showBtns();
   likeBtn.onclick = likeMovie;

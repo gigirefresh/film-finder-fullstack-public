@@ -25,21 +25,26 @@ app.get('/discover/movie', (req, res) => {
 })
 
 app.post('/api/movie/like', (req, res) => {
- console.log("Request body: ", req.body.movieId);
- const responseObj = { message: 'Data received successfully', yourData: req.body };
- try {
-  const votesText = fs.readFileSync(`data/votes.json`, 'utf8'); 
-  const votesObj = JSON.parse(votesText);
-  console.log("votesObj BEFORE PUSH", votesObj);
-  votesObj.likes.push(req.body.movieId);
-  console.log("votesObj AFTER PUSH", votesObj);
-  fs.writeFileSync("data/votes.json", JSON.stringify(votesObj));
-  console.log("Fine scrittura file") // Non lo stampa
- }
- catch (err) {
-  console.log("Error: ", err);
- }
- res.status(200).json(responseObj);
+  console.log("MovieId from request body: ", req.body.movieId);
+  console.log("Like from request body: ", req.body.like);
+  const responseObj = { message: 'Data received successfully', yourData: req.body };
+  try {
+    const votesText = fs.readFileSync(`data/votes.json`, 'utf8');
+    const votesObj = JSON.parse(votesText);
+    console.log("votesObj BEFORE PUSH", votesObj);
+    if (req.body.like) { // check if the user liked or disliked the movie
+      votesObj.likes.push(req.body.movieId); // add the movieId to the likes array
+    } else {
+      votesObj.dislikes.push(req.body.movieId); // add the movieId to the dislikes array
+    }
+    console.log("votesObj AFTER PUSH", votesObj);
+    fs.writeFileSync("data/votes.json", JSON.stringify(votesObj));
+    console.log("Fine scrittura file")
+  }
+  catch (err) {
+    console.log("Error: ", err);
+  }
+  res.status(200).json(responseObj);
 });
 
 app.listen(port, () => {
