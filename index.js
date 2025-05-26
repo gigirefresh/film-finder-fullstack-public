@@ -9,11 +9,52 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const tmdbKey = '4048775a0f068af3048837ff0341a4f7';
+const tmdbBaseUrl = 'https://api.themoviedb.org/3';
+
 app.get('/genre/movie/list', (req, res) => {
   console.log(req.query);
   const dataAsText = fs.readFileSync('data/genres.json', 'utf8');
   const genres = JSON.parse(dataAsText);
   res.send(genres)
+});
+
+
+app.get('/movie/:movieId', async (req, res) => {
+  console.log("/movie/movieId ", req.params.movieId);
+  console.log("I parametri sono: ", req.params);
+  const movieId = req.params.movieId;
+  // controllo se esiste il file `data/movie-${movieId}.json`
+  // SE NON ESISTE (devo usare fs.statSync...) --> lo scarico con fetch ()
+  // SE ESISTE --> non faccio nulla
+
+  // SE IL FILE NON ESISTE
+  try {
+    fs.statSync(`data/movie-${movieId}.json`);
+    console.log("trovato il file!")
+  } catch(error) {
+    // ALLORA LO SCARICO
+    // il file non esiste --> lo scarichiamo
+    console.log("Getting movie details for ", movieId);
+    const movieEndpoint = `/movie/${movieId}`;
+    const requestParams = `?api_key=${tmdbKey}`;
+    const urlToFetch = tmdbBaseUrl + movieEndpoint + requestParams;
+    try {
+      const response = await fetch(urlToFetch);
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log("Got movie info: ", jsonResponse);
+        fs.writeFileSync(`data/movie-${movieId}.json`, JSON.stringify(jsonResponse));
+      }
+    } catch (e) {
+      console.log(" Error getting movie info: ", e);
+    }
+  }
+
+  // INFINE procedo RESISTUENDO il contenuto del file
+  const dataAsText = fs.readFileSync(`data/movie-${movieId}.json`, 'utf8');
+  const movieData = JSON.parse(dataAsText);
+  res.send(movieData)
 });
 
 app.get('/discover/movie', (req, res) => {

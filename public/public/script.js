@@ -52,7 +52,7 @@ const getMovieInfo = async (movie) => {
   const movieId = movie.id;
   const movieEndpoint = `/movie/${movieId}`;
   const requestParams = `?api_key=${tmdbKey}`;
-  const urlToFetch = tmdbBaseUrl+movieEndpoint+requestParams;
+  const urlToFetch = tmdbBaseLocale + movieEndpoint + requestParams;
   try {
     const response = await fetch(urlToFetch);
     if (response.ok) {
