@@ -89,7 +89,7 @@ const showRandomMovie = async () => {
   displayMovie(randomMovie); // lo visualizzo
 
   // scarico i dettagli completi dei pprimi cinque film
-  const movieDetails = await getMovieDetails(movies.slice(0, 5));
+  const movieDetails = await getMovieDetails(movies);
   displayCarousel(movieDetails); // visualizzo il carosello
 };
 

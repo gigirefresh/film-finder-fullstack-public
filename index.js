@@ -24,6 +24,7 @@ app.get('/movie/:movieId', async (req, res) => {
   console.log("/movie/movieId ", req.params.movieId);
   console.log("I parametri sono: ", req.params);
   const movieId = req.params.movieId;
+  console.log("MovieId: ", movieId);
   // controllo se esiste il file `data/movie-${movieId}.json`
   // SE NON ESISTE (devo usare fs.statSync...) --> lo scarico con fetch ()
   // SE ESISTE --> non faccio nulla
@@ -74,9 +75,15 @@ app.post('/api/movie/like', (req, res) => {
     const votesObj = JSON.parse(votesText);
     console.log("votesObj BEFORE PUSH", votesObj);
     if (req.body.like) { // check if the user liked or disliked the movie
-      votesObj.likes.push(req.body.movieId); // add the movieId to the likes array
+      if (!votesObj.likes.includes(req.body.movieId)) {
+        votesObj.likes.push(req.body.movieId); // add the movieId to the likes array
+      }
+      
     } else {
-      votesObj.dislikes.push(req.body.movieId); // add the movieId to the dislikes array
+      if (!votesObj.dislikes.includes(req.body.movieId)) {
+        votesObj.dislikes.push(req.body.movieId); // add the movieId to the dislikes array
+      }
+      // votesObj.likes = votesObj.likes.filter(id => id !== req.body.movieId); // remove the movieId from the likes array
     }
     console.log("votesObj AFTER PUSH", votesObj);
     fs.writeFileSync("data/votes.json", JSON.stringify(votesObj));
@@ -86,6 +93,28 @@ app.post('/api/movie/like', (req, res) => {
     console.log("Error: ", err);
   }
   res.status(200).json(responseObj);
+});
+
+const movieToGenreIds = (movieId) => {
+  const movieDataAsText = fs.readFileSync(`data/movie-${movieId}.json`, 'utf8');
+  const movieObj = JSON.parse(movieDataAsText);
+  const genresIds = movieObj.genres.map(g => g.id);
+  return genresIds;
+}
+
+const readVotesFromFile = () => {
+  const votesDataAsText = fs.readFileSync('data/votes.json', 'utf8');
+  const votesData = JSON.parse(votesDataAsText);
+  console.log(votesData);
+  return votesData.likes;
+}
+
+app.get('/recommendations', (req, res) => {
+  const likedMovieIds = readVotesFromFile();
+  console.log("Liked movie IDs: ", likedMovieIds);
+  const likedGenresIds = likedMovieIds.map(movieToGenreIds).flat();
+  console.log("Liked genres IDs: ", likedGenresIds);
+  res.status(200).json({message: 'This is a placeholder for recommendations'});
 });
 
 app.listen(port, () => {
