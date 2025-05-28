@@ -109,11 +109,33 @@ const readVotesFromFile = () => {
   return votesData.likes;
 }
 
+const mostFrequentGenre = (genreIds) => {
+  const frequency = {};
+  let maxCount = 0;
+  let mostFrequent;
+
+  for (let i = 0; i < likedGenresIds.length; i++) {
+    const genreId = likedGenresIds[i];
+    frequency[genreId] = (frequency[genreId] || 0) + 1;
+    console.log("Frequency: ", frequency);
+    // Trovo il genere più frequente
+    if (frequency[genreId] > maxCount) {
+      maxCount = frequency[genreId];
+      mostFrequent = genreId;
+    }
+  }
+  return mostFrequent;
+}
+
 app.get('/recommendations', (req, res) => {
   const likedMovieIds = readVotesFromFile();
   console.log("Liked movie IDs: ", likedMovieIds);
   const likedGenresIds = likedMovieIds.map(movieToGenreIds).flat();
   console.log("Liked genres IDs: ", likedGenresIds);
+  // Qui estraiamo il generere più frequente tra i generi dei film che l'utente ha messo "mi piace"
+  const mostFrequent = mostFrequentGenre(likedGenresIds);
+  console.log("Most frequent genre ID: ", mostFrequent);
+
   res.status(200).json({message: 'This is a placeholder for recommendations'});
 });
 
