@@ -58,11 +58,17 @@ app.get('/movie/:movieId', async (req, res) => {
   res.send(movieData)
 });
 
+const getMoviesFromGenre = (genreId) => {
+  console.log("Getting movies for genreId: ", genreId);
+  const dataAsText = fs.readFileSync(`data/genre-movies-${genreId}.json`, 'utf8');
+  const genreMovies = JSON.parse(dataAsText);
+  return genreMovies;
+}
+
 app.get('/discover/movie', (req, res) => {
   console.log("/discover/movie params: ", req.query)
   const genreId = req.query.with_genres; // <-- SECURITY THREAT!
-  const dataAsText = fs.readFileSync(`data/genre-movies-${genreId}.json`, 'utf8');
-  const genreMovies = JSON.parse(dataAsText);
+  const genreMovies = getMoviesFromGenre(genreId);
   res.send(genreMovies);
 })
 
@@ -106,7 +112,7 @@ const readVotesFromFile = () => {
   const votesDataAsText = fs.readFileSync('data/votes.json', 'utf8');
   const votesData = JSON.parse(votesDataAsText);
   console.log(votesData);
-  return votesData.likes;
+  return votesData;
 }
 
 const mostFrequentGenre = (genreIds) => {
@@ -114,8 +120,8 @@ const mostFrequentGenre = (genreIds) => {
   let maxCount = 0;
   let mostFrequent;
 
-  for (let i = 0; i < likedGenresIds.length; i++) {
-    const genreId = likedGenresIds[i];
+  for (let i = 0; i < genreIds.length; i++) {
+    const genreId = genreIds[i];
     frequency[genreId] = (frequency[genreId] || 0) + 1;
     console.log("Frequency: ", frequency);
     // Trovo il genere più frequente
@@ -128,15 +134,26 @@ const mostFrequentGenre = (genreIds) => {
 }
 
 app.get('/recommendations', (req, res) => {
-  const likedMovieIds = readVotesFromFile();
+  const votedData = readVotesFromFile();
+  const likedMovieIds = votedData.likes;
+  const dislikedMovieIds = votedData.dislikes;
   console.log("Liked movie IDs: ", likedMovieIds);
   const likedGenresIds = likedMovieIds.map(movieToGenreIds).flat();
   console.log("Liked genres IDs: ", likedGenresIds);
   // Qui estraiamo il generere più frequente tra i generi dei film che l'utente ha messo "mi piace"
   const mostFrequent = mostFrequentGenre(likedGenresIds);
   console.log("Most frequent genre ID: ", mostFrequent);
-
-  res.status(200).json({message: 'This is a placeholder for recommendations'});
+  // Ora dobbiamo trovare i film di quel genere
+  const genreMoviesData = getMoviesFromGenre(mostFrequent);
+  console.log("Genre movies data: ", genreMoviesData);
+  // Infine, restituiamo i primi 5 film di quel genere escludendo quelli che l'utente ha già messo "mi piace"
+  const votedMovieIds = likedMovieIds.concat(dislikedMovieIds);
+  console.log("Voted movie IDs: ", votedMovieIds);
+  const recommendedMovies = genreMoviesData.results.filter(
+    movie => !votedMovieIds.includes(movie.id.toString())
+  ).slice(0, 5);
+  console.log("Recommended movies: ", recommendedMovies);
+  res.status(200).json({suggestedMovies: recommendedMovies});
 });
 
 app.listen(port, () => {
