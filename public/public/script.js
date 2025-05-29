@@ -1,6 +1,6 @@
 const tmdbKey = '4048775a0f068af3048837ff0341a4f7';
 const tmdbBaseUrl = 'https://api.themoviedb.org/3';
-const tmdbBaseLocale = 'http://localhost:3000';
+const tmdbBaseLocale = '';
 
 const playBtn = document.getElementById('playBtn');
 
@@ -91,6 +91,8 @@ const showRandomMovie = async () => {
   // scarico i dettagli completi dei pprimi cinque film
   const movieDetails = await getMovieDetails(movies);
   displayCarousel(movieDetails); // visualizzo il carosello
+
+  //...
 };
 
 getGenres().then(populateGenreDropdown);
